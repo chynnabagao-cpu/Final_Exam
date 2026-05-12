@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <style>
+        :root { --primary: #2563eb; --dark: #1e293b; --light: #f8fafc; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--light); margin: 0; padding: 0; }
+        nav { background: var(--dark); color: white; padding: 1rem; text-align: center; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        h2 { color: var(--dark); border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; }
+        form { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .full-width { grid-column: span 2; }
+        input, select, button { padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; }
+        button { background: var(--primary); color: white; border: none; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #1d4ed8; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: var(--primary); color: white; }
+        .btn-delete { background: #ef4444; padding: 0.5rem; font-size: 0.8rem; text-decoration: none; border-radius: 4px; color: white; }
+        .btn-edit { background: #f59e0b; padding: 0.5rem; font-size: 0.8rem; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h1>Student Information Management System</h1>
+</nav>
+
+<div class="container">
+    <!-- Registration / Edit Form -->
+    <div class="card">
+        <h2 id="form-title">Student Registration</h2>
+        <form action="/add-student" method="POST" id="student-form">
+            <input type="text" name="student_id" id="student_id" placeholder="Student ID (e.g. 2024-0001)" required>
+            <input type="text" name="full_name" id="full_name" placeholder="Full Name" required>
+            <input type="text" name="course" id="course" placeholder="Course (e.g. BSIT)" required>
+            <select name="year_level" id="year_level" required>
+                <option value="">Select Year Level</option>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="4th Year">4th Year</option>
+            </select>
+            <input type="email" name="email_address" id="email_address" placeholder="Email Address" class="full-width" required>
+            <button type="submit" id="submit-btn" class="full-width">Register Student</button>
+            <button type="button" id="cancel-btn" class="full-width" style="background:#64748b; display:none;" onclick="resetForm()">Cancel Edit</button>
+        </form>
+    </div>
+
+    <!-- Student List Table -->
+    <div class="card">
+        <h2>Registered Students</h2>
+        <table id="student-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Course</th>
+                    <th>Year</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="student-data">
+                <!-- Data will be loaded here via JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Fetch and display students on load
+    async function fetchStudents() {
+        const response = await fetch('/api/students');
+        const students = await response.json();
+        const tableBody = document.getElementById('student-data');
+        tableBody.innerHTML = '';
+
+        students.forEach(s => {
+            tableBody.innerHTML += `
+                <tr>
+                    <td>${s.student_id}</td>
+                    <td>${s.full_name}</td>
+                    <td>${s.course}</td>
+                    <td>${s.year_level}</td>
+                    <td>${s.email_address}</td>
+                    <td>
+                        <button class="btn-edit" onclick="editStudent('${s.student_id}', '${s.full_name}', '${s.course}', '${s.year_level}', '${s.email_address}')">Edit</button>
+                        <a href="/delete-student/${s.student_id}" class="btn-delete" onclick="return confirm('Delete this record?')">Delete</a>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    // Fill form for editing
+    function editStudent(id, name, course, year, email) {
+        document.getElementById('form-title').innerText = "Edit Student Information";
+        document.getElementById('student-form').action = "/update-student";
+        document.getElementById('student_id').value = id;
+        document.getElementById('student_id').readOnly = true; // ID should not change
+        document.getElementById('full_name').value = name;
+        document.getElementById('course').value = course;
+        document.getElementById('year_level').value = year;
+        document.getElementById('email_address').value = email;
+        document.getElementById('submit-btn').innerText = "Update Record";
+        document.getElementById('cancel-btn').style.display = "block";
+    }
+
+    // Reset form to Registration mode
+    function resetForm() {
+        document.getElementById('form-title').innerText = "Student Registration";
+        document.getElementById('student-form').action = "/add-student";
+        document.getElementById('student-form').reset();
+        document.getElementById('student_id').readOnly = false;
+        document.getElementById('submit-btn').innerText = "Register Student";
+        document.getElementById('cancel-btn').style.display = "none";
+    }
+
+    window.onload = fetchStudents;
+</script>
+
+</body>
+</html>
