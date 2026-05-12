@@ -8,200 +8,157 @@
     <style>
         :root { 
             --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --primary-hover: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
-            --secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --dark: #1a202c; 
-            --dark-secondary: #2d3748;
-            --light: #f7fafc; 
+            --dark: #0f172a; 
             --white: #ffffff;
-            --success: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-            --danger: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
-            --warning: linear-gradient(135deg, #facc15 0%, #eab308 100%);
-            --shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-            --shadow-hover: 0 25px 50px -12px rgba(0,0,0,0.25);
+            --shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            
+            /* Nav Specific Colors */
+            --nav-bg: rgba(15, 23, 42, 0.85);
+            --nav-border: rgba(255, 255, 255, 0.1);
         }
 
         * { box-sizing: border-box; }
 
         body { 
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            font-family: 'Inter', sans-serif; 
             background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             background-attachment: fixed;
             margin: 0; 
-            padding: 0; 
             min-height: 100vh;
-            color: #2d3748;
         }
 
-        /* --- GLASSMORPHISM EFFECT --- */
-        .glass {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: var(--shadow);
-        }
-
-        /* --- RESPONSIVE NAVIGATION BAR --- */
-        nav { 
-            background: rgba(26, 32, 44, 0.95);
-            backdrop-filter: blur(20px);
-            color: var(--white); 
-            padding: 1rem 2rem; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            position: fixed; 
-            top: 0; 
+        /* --- UPDATED MODERN NAVIGATION STYLES --- */
+        nav {
+            background: var(--nav-bg);
+            backdrop-filter: blur(15px) saturate(180%);
+            -webkit-backdrop-filter: blur(15px) saturate(180%);
+            border-bottom: 1px solid var(--nav-border);
+            padding: 1.2rem 0;
+            position: fixed;
+            top: 0;
             width: 100%;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
+            z-index: 2000;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Scrolled state for the nav */
+        nav.scrolled {
+            padding: 0.7rem 0;
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.4);
         }
 
         .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
+            padding: 0 2rem;
         }
 
-        .nav-logo { 
-            font-size: 1.5rem; 
-            font-weight: 800; 
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            background: var(--primary);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--white);
             background: var(--primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
+        }
+
+        .nav-menu {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .nav-logo:hover {
-            transform: scale(1.05);
-        }
-
-        .nav-logo i { font-size: 1.8rem; color: #fff; }
-
-        /* Desktop Navigation */
-        .nav-menu {
-            display: flex;
             list-style: none;
             margin: 0;
             padding: 0;
-            gap: 0.5rem;
+        }
+
+        .nav-link {
+            color: rgba(248, 250, 252, 0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.7rem 1.2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            display: flex;
             align-items: center;
+            gap: 8px;
         }
 
-        .nav-menu li a { 
-            color: rgba(255,255,255,0.9); 
-            text-decoration: none; 
-            font-weight: 500; 
-            font-size: 0.95rem; 
-            padding: 0.75rem 1.25rem;
-            border-radius: 50px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            white-space: nowrap;
-        }
+        .nav-link i { font-size: 1rem; }
 
-        .nav-menu li a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .nav-menu li a:hover::before { left: 100%; }
-        .nav-menu li a:hover { 
-            color: white;
-            background: rgba(255,255,255,0.15);
+        .nav-link:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.1);
             transform: translateY(-2px);
         }
 
-        /* Mobile Menu Button */
-        .mobile-menu-btn {
+        /* Specialized CTA button in Nav */
+        .nav-link.admin-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-left: 10px;
+        }
+
+        .nav-link.admin-btn:hover {
+            background: var(--white);
+            color: var(--dark);
+        }
+
+        /* Professional Mobile Toggle */
+        .mobile-toggle {
             display: none;
+            flex-direction: column;
+            gap: 5px;
             background: none;
             border: none;
-            color: white;
-            font-size: 1.5rem;
             cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            padding: 10px;
+            z-index: 2001;
         }
 
-        .mobile-menu-btn:hover {
-            background: rgba(255,255,255,0.1);
-            transform: rotate(90deg);
+        .mobile-toggle span {
+            width: 25px;
+            height: 2px;
+            background: var(--white);
+            border-radius: 2px;
+            transition: 0.4s;
         }
 
-        /* Mobile Menu */
-        .mobile-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background: rgba(26, 32, 44, 0.98);
-            backdrop-filter: blur(20px);
-            flex-direction: column;
-            gap: 0;
-            padding: 1rem 0;
-            box-shadow: var(--shadow);
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
+        /* Animation: Hamburger to 'X' */
+        .mobile-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .mobile-toggle.open span:nth-child(2) { opacity: 0; }
+        .mobile-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-        .mobile-menu.active {
-            display: flex;
-            animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .mobile-menu li {
-            width: 100%;
-            margin: 0;
-        }
-
-        .mobile-menu li a {
-            display: block;
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            border-left: 4px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-menu li a:hover {
-            background: rgba(255,255,255,0.1);
-            border-left-color: #667eea;
-            transform: translateX(10px);
-        }
-
-        /* --- LAYOUT --- */
+        /* --- REST OF THE LAYOUT --- */
         .container { 
             max-width: 1200px; 
-            margin: 120px auto 2rem; 
+            margin: 140px auto 2rem; 
             padding: 0 2rem; 
         }
 
@@ -213,7 +170,7 @@
             box-shadow: var(--shadow);
             margin-bottom: 3rem; 
             border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
         }
@@ -228,312 +185,124 @@
             background: var(--primary);
         }
 
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-hover);
-        }
-
         h2 { 
             color: var(--dark); 
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             margin: 0 0 2rem 0;
-            position: relative;
-            display: inline-block;
         }
 
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 2px;
-        }
-
-        /* --- FORM STYLES --- */
         form { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 2rem; 
-            margin-top: 2rem; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 1.5rem; 
         }
 
-        .form-group { 
-            display: flex; 
-            flex-direction: column; 
-            position: relative;
-        }
+        .form-group { display: flex; flex-direction: column; }
 
         label { 
             font-weight: 700; 
-            margin-bottom: 0.75rem; 
+            margin-bottom: 0.5rem; 
             color: var(--dark); 
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-size: 0.9rem;
         }
 
         input, select { 
-            padding: 1.25rem 1.5rem; 
+            padding: 1rem; 
             border: 2px solid #e2e8f0; 
-            border-radius: 16px; 
-            font-size: 1rem; 
+            border-radius: 12px; 
             outline: none;
-            background: rgba(255,255,255,0.8);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-weight: 500;
+            transition: 0.3s;
         }
 
-        input:focus, select:focus { 
-            border-color: transparent;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-            background: white;
-            transform: translateY(-2px);
-        }
-
-        /* --- BUTTONS --- */
-        button { 
-            padding: 1.25rem 2.5rem; 
-            border-radius: 16px; 
-            font-size: 1rem; 
-            font-weight: 700;
-            cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: none;
-            position: relative;
-            overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        input:focus { border-color: #667eea; }
 
         .btn-submit { 
             background: var(--primary);
             color: white;
-            grid-column: 1 / -1;
-            font-size: 1.1rem;
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-submit:hover { 
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-cancel {
-            background: rgba(100, 116, 139, 0.1);
-            color: #64748b;
-            border: 2px solid #e2e8f0;
-            grid-column: 1 / -1;
-        }
-
-        .btn-cancel:hover {
-            background: rgba(100, 116, 139, 0.2);
-            transform: translateY(-2px);
-        }
-
-        /* --- TABLE STYLES --- */
-        .table-container { 
-            overflow-x: auto; 
-            margin-top: 2rem;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            min-width: 800px;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-        
-        th { 
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            color: var(--dark); 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-            padding: 1.5rem 1.25rem;
+            padding: 1rem;
             border: none;
-        }
-        
-        td { 
-            padding: 1.5rem 1.25rem; 
-            border-bottom: 1px solid #f1f5f9;
-            font-weight: 500;
-        }
-
-        tr:hover { 
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-        }
-
-        .btn-action {
-            padding: 0.75rem 1.5rem;
-            font-size: 0.85rem;
-            font-weight: 600;
             border-radius: 12px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s;
-            margin-right: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            grid-column: 1 / -1;
+            transition: 0.3s;
         }
 
-        .btn-edit { 
-            background: var(--warning);
-            color: white;
-        }
+        .btn-submit:hover { opacity: 0.9; transform: translateY(-2px); }
 
-        .btn-edit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(234, 179, 8, 0.4);
-        }
+        .table-container { overflow-x: auto; border-radius: 15px; }
 
-        .btn-delete { 
-            background: var(--danger);
-            color: white;
-            margin-right: 0;
-        }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        
+        th { background: #f8fafc; padding: 1.2rem; text-align: left; font-size: 0.8rem; text-transform: uppercase; color: #64748b; }
+        
+        td { padding: 1.2rem; border-bottom: 1px solid #f1f5f9; }
 
-        .btn-delete:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.4);
-        }
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 1024px) {
-            .nav-menu {
-                gap: 0.25rem;
-            }
-            .nav-menu li a {
-                padding: 0.6rem 1rem;
-                font-size: 0.9rem;
-            }
-        }
+        .btn-action { padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.8rem; font-weight: 600; margin-right: 5px; }
+        .btn-edit { background: #fef3c7; color: #d97706; }
+        .btn-delete { background: #fee2e2; color: #dc2626; }
 
         @media (max-width: 768px) {
-            .container { margin-top: 100px; padding: 0 1rem; }
-            .card { padding: 2rem 1.5rem; }
-            form { grid-template-columns: 1fr; gap: 1.5rem; }
+            .mobile-toggle { display: flex; }
             
-            /* Mobile Navigation */
             .nav-menu {
-                display: none;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: #0f172a;
+                flex-direction: column;
+                justify-content: center;
+                padding: 2rem;
+                transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
             }
 
-            .mobile-menu-btn {
-                display: block;
+            .nav-menu.open { right: 0; }
+
+            .nav-link {
+                width: 100%;
+                padding: 1.2rem;
+                font-size: 1.1rem;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
             }
 
-            nav {
-                padding: 1rem;
-            }
-
-            .nav-container {
-                padding: 0 0.5rem;
-            }
+            .container { margin-top: 100px; padding: 0 1rem; }
         }
 
-        @media (max-width: 480px) {
-            .nav-logo {
-                font-size: 1.25rem;
-            }
-            .nav-logo i {
-                font-size: 1.5rem;
-            }
-            .container { padding: 0 0.75rem; margin-top: 90px; }
-        }
-
-        /* --- ANIMATIONS --- */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .card {
-            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* --- FOOTER --- */
         footer { 
             text-align: center; 
-            padding: 3rem 2rem; 
-            color: rgba(255,255,255,0.9); 
-            font-size: 0.9rem;
-            background: rgba(26, 32, 44, 0.8);
-            backdrop-filter: blur(20px);
+            padding: 3rem; 
+            color: white; 
+            background: rgba(15, 23, 42, 0.9);
             margin-top: 4rem;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .stat-card {
-            background: rgba(255,255,255,0.1);
-            padding: 1.5rem;
-            border-radius: 16px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: var(--primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: block;
         }
     </style>
 </head>
 <body>
 
-<nav>
+<!-- UPDATED NAVIGATION -->
+<nav id="navbar">
     <div class="nav-container">
-        <div class="nav-logo" onclick="scrollToTop()">
-            <i class="fas fa-graduation-cap"></i>
-            SMS PORTAL
-        </div>
-        
-        <!-- Desktop Menu -->
-        <ul class="nav-menu">
-            <li><a href="#registration-section"><i class="fas fa-plus"></i> Add Student</a></li>
-            <li><a href="#list-section"><i class="fas fa-list"></i> View Records</a></li>
-            <li><a href="#"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        <a class="nav-logo" onclick="scrollToTop()">
+            <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+            <span class="logo-text">SMS Portal</span>
+        </a>
+
+        <ul class="nav-menu" id="nav-menu">
+            <li><a href="#registration-section" class="nav-link"><i class="fas fa-plus-circle"></i> Add Student</a></li>
+            <li><a href="#list-section" class="nav-link"><i class="fas fa-users"></i> View Records</a></li>
+            <li><a href="#" class="nav-link"><i class="fas fa-chart-pie"></i> Reports</a></li>
+            <li><a href="#" class="nav-link admin-btn"><i class="fas fa-lock"></i> Admin Entry</a></li>
         </ul>
 
-        <!-- Mobile Menu Button -->
-        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
-            <i class="fas fa-bars"></i>
+        <button class="mobile-toggle" id="mobile-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
         </button>
-
-        <!-- Mobile Menu -->
-        <ul class="mobile-menu" id="mobile-menu">
-            <li><a href="#registration-section"><i class="fas fa-plus"></i> Add Student</a></li>
-            <li><a href="#list-section"><i class="fas fa-list"></i> View Records</a></li>
-            <li><a href="#"><i class="fas fa-chart-bar"></i> Reports</a></li>
-        </ul>
     </div>
 </nav>
 
@@ -541,24 +310,22 @@
     
     <!-- Registration Section -->
     <div class="card" id="registration-section">
-        <h2 id="form-title">
-            <i class="fas fa-user-plus"></i> Student Registration
-        </h2>
+        <h2 id="form-title"><i class="fas fa-user-plus"></i> Student Registration</h2>
         <form action="/add-student" method="POST" id="student-form">
             <div class="form-group">
-                <label><i class="fas fa-id-card"></i> Student ID</label>
+                <label>Student ID</label>
                 <input type="text" name="student_id" id="student_id" placeholder="e.g. 2024-0001" required>
             </div>
             <div class="form-group">
-                <label><i class="fas fa-user"></i> Full Name</label>
+                <label>Full Name</label>
                 <input type="text" name="full_name" id="full_name" placeholder="Enter full name" required>
             </div>
             <div class="form-group">
-                <label><i class="fas fa-book"></i> Course</label>
+                <label>Course</label>
                 <input type="text" name="course" id="course" placeholder="e.g. BSIT" required>
             </div>
             <div class="form-group">
-                <label><i class="fas fa-layer-group"></i> Year Level</label>
+                <label>Year Level</label>
                 <select name="year_level" id="year_level" required>
                     <option value="">Select Year</option>
                     <option value="1st Year">1st Year</option>
@@ -568,94 +335,66 @@
                 </select>
             </div>
             <div class="form-group">
-                <label><i class="fas fa-envelope"></i> Email Address</label>
+                <label>Email Address</label>
                 <input type="email" name="email_address" id="email_address" placeholder="student@slsu.edu.ph" required>
             </div>
             
-            <button type="submit" id="submit-btn" class="btn-submit">
-                <i class="fas fa-check"></i> Register Student
-            </button>
-            <button type="button" id="cancel-btn" class="btn-cancel" style="display:none;" onclick="resetForm()">
-                <i class="fas fa-times"></i> Cancel Editing
-            </button>
+            <button type="submit" id="submit-btn" class="btn-submit">Register Student</button>
         </form>
     </div>
 
     <!-- Student List Section -->
     <div class="card" id="list-section">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-            <h2><i class="fas fa-users"></i> Registered Students</h2>
-            <div class="stats" id="stats-container">
-                <!-- Dynamic stats will be here -->
-            </div>
-        </div>
+        <h2><i class="fas fa-list-ul"></i> Registered Students</h2>
         <div class="table-container">
-            <table id="student-table">
+            <table>
                 <thead>
                     <tr>
-                        <th><i class="fas fa-id-badge"></i> ID</th>
-                        <th><i class="fas fa-user"></i> Name</th>
-                        <th><i class="fas fa-book"></i> Course</th>
-                        <th><i class="fas fa-calendar"></i> Year</th>
-                        <th><i class="fas fa-envelope"></i> Email</th>
-                        <th><i class="fas fa-cogs"></i> Actions</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th>Year</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="student-data">
-                    <!-- Dynamic Data -->
+                    <!-- Data would be dynamically inserted here -->
                 </tbody>
             </table>
         </div>
     </div>
-
 </div>
 
 <footer>
-    <div class="stats">
-        <div class="stat-card">
-            <span class="stat-number" id="total-students">0</span>
-            Total Students
-        </div>
-        <div class="stat-card">
-            <span class="stat-number" style="background: var(--success); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">0</span>
-            1st Year
-        </div>
-        <div class="stat-card">
-            <span class="stat-number" style="background: var(--warning); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">0</span>
-            4th Year
-        </div>
-    </div>
     <p>&copy; 2026 Student Management System | SLSU Final Examination Project</p>
-    <p>Powered by Modern Web Technologies</p>
 </footer>
 
 <script>
-    // Mobile menu toggle
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+    // NAVIGATION LOGIC
+    const navbar = document.getElementById('navbar');
+    const mobileToggle = document.getElementById('mobile-toggle');
+    const navMenu = document.getElementById('nav-menu');
 
-    mobileMenuBtn.addEventListener('click', function() {
-        mobileMenu.classList.toggle('active');
-        const icon = this.querySelector('i');
-        icon.classList.toggle('fa-bars');
-        icon.classList.toggle('fa-times');
+    // Toggle Mobile Menu
+    mobileToggle.addEventListener('click', () => {
+        mobileToggle.classList.toggle('open');
+        navMenu.classList.toggle('open');
     });
 
-    // Close mobile menu when clicking on a link
-    document.querySelectorAll('.mobile-menu a').forEach(link => {
+    // Close Menu on Link Click
+    document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            mobileMenuBtn.querySelector('i').classList.add('fa-bars');
-            mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+            mobileToggle.classList.remove('open');
+            navMenu.classList.remove('open');
         });
     });
 
-    // Close mobile menu on window resize (desktop)
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 768) {
-            mobileMenu.classList.remove('active');
-            mobileMenuBtn.querySelector('i').classList.add('fa-bars');
-            mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+    // Sticky Navbar Scroll Effect
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
         }
     });
 
@@ -663,102 +402,12 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // Dummy data fetch placeholder
     async function fetchStudents() {
-        try {
-            const response = await fetch('/api/students');
-            const students = await response.json();
-            const tableBody = document.getElementById('student-data');
-            const statsContainer = document.getElementById('stats-container');
-            const totalStudentsEl = document.getElementById('total-students');
-            
-            tableBody.innerHTML = '';
-            let yearCounts = { '1st Year': 0, '2nd Year': 0, '3rd Year': 0, '4th Year': 0 };
-
-            students.forEach(s => {
-                yearCounts[s.year_level]++;
-                tableBody.innerHTML += `
-                    <tr>
-                        <td><strong>${s.student_id}</strong></td>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.8rem;">${s.full_name.charAt(0)}</div>
-                                ${s.full_name}
-                            </div>
-                        </td>
-                        <td><span style="background: rgba(102,126,234,0.1); padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 600;">${s.course}</span></td>
-                        <td><span style="color: #059669; font-weight: 700;">${s.year_level}</span></td>
-                        <td>${s.email_address}</td>
-                        <td>
-                            <a href="#" class="btn-action btn-edit" onclick="editStudent('${s.student_id}', '${s.full_name}', '${s.course}', '${s.year_level}', '${s.email_address}'); return false;">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <a href="/delete-student/${s.student_id}" class="btn-action btn-delete" onclick="return confirm('Are you sure you want to delete ${s.full_name}? This action cannot be undone.')">
-                                <i class="fas fa-trash"></i> Delete
-                            </a>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            // Update stats
-            totalStudentsEl.textContent = students.length;
-            statsContainer.innerHTML = `
-                <div class="stat-card">
-                    <span class="stat-number">${students.length}</span>
-                    Total Students
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" style="background: var(--success); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">${yearCounts['1st Year']}</span>
-                    1st Year
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" style="background: var(--warning); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">${yearCounts['4th Year']}</span>
-                    4th Year
-                </div>
-            `;
-        } catch (err) {
-            console.error("Error fetching students:", err);
-        }
+        const tableBody = document.getElementById('student-data');
+        // This is where your API integration lives
+        tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b;">Waiting for database connection...</td></tr>';
     }
-
-    function editStudent(id, name, course, year, email) {
-        document.getElementById('form-title').innerHTML = '<i class="fas fa-user-edit"></i> Update Student Info';
-        document.getElementById('student-form').action = "/update-student";
-        document.getElementById('student_id').value = id;
-        document.getElementById('student_id').readOnly = true;
-        document.getElementById('full_name').value = name;
-        document.getElementById('course').value = course;
-        document.getElementById('year_level').value = year;
-        document.getElementById('email_address').value = email;
-        document.getElementById('submit-btn').innerHTML = '<i class="fas fa-save"></i> Save Changes';
-        document.getElementById('cancel-btn').style.display = "block";
-        
-        window.scrollTo({ top: document.getElementById('registration-section').offsetTop - 120, behavior: 'smooth' });
-    }
-
-    function resetForm() {
-        document.getElementById('form-title').innerHTML = '<i class="fas fa-user-plus"></i> Student Registration';
-        document.getElementById('student-form').action = "/add-student";
-        document.getElementById('student-form').reset();
-        document.getElementById('student_id').readOnly = false;
-        document.getElementById('submit-btn').innerHTML = '<i class="fas fa-check"></i> Register Student';
-        document.getElementById('cancel-btn').style.display = "none";
-    }
-
-    // Smooth scrolling for nav links
-    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-            // Close mobile menu after click
-            mobileMenu.classList.remove('active');
-            mobileMenuBtn.querySelector('i').classList.add('fa-bars');
-            mobileMenuBtn.querySelector('i').classList.remove('fa-times');
-        });
-    });
 
     window.onload = fetchStudents;
 </script>
