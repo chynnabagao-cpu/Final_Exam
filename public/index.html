@@ -41,7 +41,7 @@
             box-shadow: var(--shadow);
         }
 
-        /* --- NAVIGATION BAR --- */
+        /* --- RESPONSIVE NAVIGATION BAR --- */
         nav { 
             background: rgba(26, 32, 44, 0.95);
             backdrop-filter: blur(20px);
@@ -55,6 +55,17 @@
             width: 100%;
             z-index: 1000;
             border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
         }
 
         .nav-logo { 
@@ -67,31 +78,40 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
         }
 
         .nav-logo i { font-size: 1.8rem; color: #fff; }
 
-        nav ul { 
-            list-style: none; 
-            display: flex; 
-            margin: 0; 
-            padding: 0; 
-            gap: 2rem;
+        /* Desktop Navigation */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 0.5rem;
+            align-items: center;
         }
 
-        nav ul li a { 
+        .nav-menu li a { 
             color: rgba(255,255,255,0.9); 
             text-decoration: none; 
             font-weight: 500; 
-            font-size: 1rem; 
-            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem; 
+            padding: 0.75rem 1.25rem;
             border-radius: 50px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            white-space: nowrap;
         }
 
-        nav ul li a::before {
+        .nav-menu li a::before {
             content: '';
             position: absolute;
             top: 0;
@@ -102,11 +122,80 @@
             transition: left 0.5s;
         }
 
-        nav ul li a:hover::before { left: 100%; }
-        nav ul li a:hover { 
+        .nav-menu li a:hover::before { left: 100%; }
+        .nav-menu li a:hover { 
             color: white;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.15);
             transform: translateY(-2px);
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background: rgba(255,255,255,0.1);
+            transform: rotate(90deg);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: rgba(26, 32, 44, 0.98);
+            backdrop-filter: blur(20px);
+            flex-direction: column;
+            gap: 0;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .mobile-menu.active {
+            display: flex;
+            animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mobile-menu li {
+            width: 100%;
+            margin: 0;
+        }
+
+        .mobile-menu li a {
+            display: block;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu li a:hover {
+            background: rgba(255,255,255,0.1);
+            border-left-color: #667eea;
+            transform: translateX(10px);
         }
 
         /* --- LAYOUT --- */
@@ -321,12 +410,47 @@
         }
 
         /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .nav-menu {
+                gap: 0.25rem;
+            }
+            .nav-menu li a {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
         @media (max-width: 768px) {
-            .container { margin-top: 140px; padding: 0 1rem; }
+            .container { margin-top: 100px; padding: 0 1rem; }
             .card { padding: 2rem 1.5rem; }
             form { grid-template-columns: 1fr; gap: 1.5rem; }
-            nav ul { gap: 1rem; }
-            nav ul li a { padding: 0.5rem 1rem; font-size: 0.9rem; }
+            
+            /* Mobile Navigation */
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav {
+                padding: 1rem;
+            }
+
+            .nav-container {
+                padding: 0 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-logo {
+                font-size: 1.25rem;
+            }
+            .nav-logo i {
+                font-size: 1.5rem;
+            }
+            .container { padding: 0 0.75rem; margin-top: 90px; }
         }
 
         /* --- ANIMATIONS --- */
@@ -386,15 +510,31 @@
 <body>
 
 <nav>
-    <div class="nav-logo">
-        <i class="fas fa-graduation-cap"></i>
-        SMS PORTAL
+    <div class="nav-container">
+        <div class="nav-logo" onclick="scrollToTop()">
+            <i class="fas fa-graduation-cap"></i>
+            SMS PORTAL
+        </div>
+        
+        <!-- Desktop Menu -->
+        <ul class="nav-menu">
+            <li><a href="#registration-section"><i class="fas fa-plus"></i> Add Student</a></li>
+            <li><a href="#list-section"><i class="fas fa-list"></i> View Records</a></li>
+            <li><a href="#"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        </ul>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Mobile Menu -->
+        <ul class="mobile-menu" id="mobile-menu">
+            <li><a href="#registration-section"><i class="fas fa-plus"></i> Add Student</a></li>
+            <li><a href="#list-section"><i class="fas fa-list"></i> View Records</a></li>
+            <li><a href="#"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        </ul>
     </div>
-    <ul>
-        <li><a href="#registration-section"><i class="fas fa-plus"></i> Add Student</a></li>
-        <li><a href="#list-section"><i class="fas fa-list"></i> View Records</a></li>
-        <li><a href="#"><i class="fas fa-chart-bar"></i> Reports</a></li>
-    </ul>
 </nav>
 
 <div class="container">
@@ -490,6 +630,39 @@
 </footer>
 
 <script>
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuBtn.addEventListener('click', function() {
+        mobileMenu.classList.toggle('active');
+        const icon = this.querySelector('i');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+    });
+
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+            mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+        });
+    });
+
+    // Close mobile menu on window resize (desktop)
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            mobileMenu.classList.remove('active');
+            mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+            mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+        }
+    });
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     async function fetchStudents() {
         try {
             const response = await fetch('/api/students');
@@ -580,6 +753,10 @@
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
+            // Close mobile menu after click
+            mobileMenu.classList.remove('active');
+            mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+            mobileMenuBtn.querySelector('i').classList.remove('fa-times');
         });
     });
 
