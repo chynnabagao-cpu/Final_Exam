@@ -31,12 +31,17 @@ db.connect((err) => {
 
 // --- CRUD ROUTES ---
 
-// 1. CREATE: Add Student
+// 1. CREATE: Add Student (Explicit Columns)
 app.post('/add-student', (req, res) => {
     const { student_id, full_name, course, year_level, email_address } = req.body;
-    const sql = "INSERT INTO students VALUES (?, ?, ?, ?, ?)";
+    // Explicitly naming the columns prevents the count mismatch error
+    const sql = "INSERT INTO students (student_id, full_name, course, year_level, email_address) VALUES (?, ?, ?, ?, ?)";
+    
     db.query(sql, [student_id, full_name, course, year_level, email_address], (err) => {
-        if (err) return res.status(500).send(err);
+        if (err) {
+            console.error(err);
+            return res.status(500).send(err.sqlMessage);
+        }
         res.redirect('/');
     });
 });
@@ -50,12 +55,16 @@ app.get('/api/students', (req, res) => {
     });
 });
 
-// 3. UPDATE: Update Student
+// 3. UPDATE: Update Student (Explicit Mapping)
 app.post('/update-student', (req, res) => {
     const { student_id, full_name, course, year_level, email_address } = req.body;
     const sql = "UPDATE students SET full_name=?, course=?, year_level=?, email_address=? WHERE student_id=?";
+    
     db.query(sql, [full_name, course, year_level, email_address, student_id], (err) => {
-        if (err) return res.status(500).send(err);
+        if (err) {
+            console.error(err);
+            return res.status(500).send(err.sqlMessage);
+        }
         res.redirect('/');
     });
 });
