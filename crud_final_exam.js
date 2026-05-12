@@ -34,12 +34,14 @@ db.connect((err) => {
 // 1. CREATE: Add Student (Explicit Columns)
 app.post('/add-student', (req, res) => {
     const { student_id, full_name, course, year_level, email_address } = req.body;
-    // Explicitly naming the columns prevents the count mismatch error
-    const sql = "INSERT INTO students (student_id, full_name, course, year_level, email_address) VALUES (?, ?, ?, ?, ?)";
+    
+    // Explicitly naming the columns (student_id, full_name, etc.) fixes the count mismatch
+    const sql = `INSERT INTO students (student_id, full_name, course, year_level, email_address) 
+                 VALUES (?, ?, ?, ?, ?)`;
     
     db.query(sql, [student_id, full_name, course, year_level, email_address], (err) => {
         if (err) {
-            console.error(err);
+            console.error("Database Error:", err);
             return res.status(500).send(err.sqlMessage);
         }
         res.redirect('/');
